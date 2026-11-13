@@ -114,3 +114,57 @@ X-User-Id: {{usuario}}
 ### Quitar favorito
 DELETE {{base}}/usuarios/me/favoritos/evt-hamlet
 X-User-Id: {{usuario}}
+
+### ------------------------------------------------------------ Compras (CU-01, CU-02, CU-07, CU-08, CU-12)
+# Los IDs de compra son UUID: copiá uno de "Mis compras" en @compra.
+@compra = pegar-aca-un-id-de-compra
+
+### Mis compras (con días restantes si están confirmadas)
+GET {{base}}/usuarios/me/compras
+X-User-Id: {{usuario}}
+
+### Mis compras confirmadas
+GET {{base}}/usuarios/me/compras?estado=CONFIRMADA
+X-User-Id: {{usuario}}
+
+### Ver los tipos de entrada de un evento (para obtener un tipoEntradaId)
+GET {{base}}/eventos/evt-jazz-bosque
+
+### Comprar entradas (reemplazar tipoEntradaId)
+POST {{base}}/compras
+X-User-Id: usr-diego
+Content-Type: application/json
+
+{
+  "eventoId": "evt-jazz-bosque",
+  "tipoEntradaId": "pegar-aca-el-id-del-tipo",
+  "cantidad": 2
+}
+
+### Detalle de una compra (historial, rol y acciones disponibles)
+GET {{base}}/compras/{{compra}}
+X-User-Id: {{usuario}}
+
+### Pagar (PENDIENTE → CONFIRMADA)
+POST {{base}}/compras/{{compra}}/pago
+X-User-Id: {{usuario}}
+
+### Cancelar (si estaba CONFIRMADA queda REEMBOLSADA)
+POST {{base}}/compras/{{compra}}/cancelacion
+X-User-Id: {{usuario}}
+
+### Marcar como utilizada (solo el organizador del evento)
+POST {{base}}/compras/{{compra}}/uso
+X-User-Id: usr-ana
+
+### Compras de un evento: disponibilidad por tipo y resumen por estado (organizador)
+GET {{base}}/eventos/evt-pericos-acustico/compras
+X-User-Id: usr-ana
+
+### Solo las pendientes
+GET {{base}}/eventos/evt-pericos-acustico/compras?estado=PENDIENTE
+X-User-Id: usr-ana
+
+### Un organizador que no es el del evento → 403
+GET {{base}}/eventos/evt-pericos-acustico/compras
+X-User-Id: usr-bruno

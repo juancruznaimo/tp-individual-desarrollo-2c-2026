@@ -10,10 +10,11 @@ import { AHORA } from './fabricas.js';
  * App con los datos de ejemplo y el reloj fijo en AHORA (12/11/2026 12:00 ART).
  * Cada llamada crea repositorios nuevos: los tests no se pisan entre sí.
  */
-export function crearAppDePrueba({ ahora = AHORA } = {}) {
+export function crearAppDePrueba({ ahora = AHORA, relojEn = ahora } = {}) {
   const repos = crearRepositorios();
   cargarDatosDeEjemplo(repos, ahora);
-  const app = crearApp({ repos, reloj: relojFijo(ahora) });
+  // `relojEn` permite cargar el seed en un momento y consultar la API en otro posterior.
+  const app = crearApp({ repos, reloj: relojFijo(relojEn) });
 
   /** Atajos de supertest con el header `X-User-Id` ya puesto. */
   const como = (usuarioId) => ({
@@ -27,3 +28,7 @@ export function crearAppDePrueba({ ahora = AHORA } = {}) {
 }
 
 export const ids = (respuesta) => respuesta.body.data.map((e) => e.id);
+
+/** ID de la (primera) compra de un comprador para un evento del seed. */
+export const compraDe = (repos, compradorId, eventoId) =>
+  repos.compras.porCompradorYEvento(compradorId, eventoId)[0].id;

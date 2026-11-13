@@ -136,9 +136,11 @@ Solo el organizador del evento (RN-06), si no `403`.
     { "tipoEntradaId": "…", "nombre": "Campo", "precio": 45000, "cupoTotal": 20000, "vendidas": 1520, "disponibles": 18480 }
   ],
   "resumenPorEstado": { "PENDIENTE": 3, "CONFIRMADA": 40, "UTILIZADA": 0, "CANCELADA": 2, "REEMBOLSADA": 1 },
-  "compras": [ CompraResumen ]
+  "compras": [ CompraResumen ]          // más nuevas primero
 }
 ```
+
+El filtro `estado` solo afecta a `compras`: `disponibilidad` y `resumenPorEstado` siempre son del evento completo.
 
 ### `GET /organizadores/:id/resenias` · CU-10
 Todas las reseñas de los eventos del organizador, de más nueva a más vieja. `200 { puntaje, cantidadResenias, resenias: Paginado<Resenia> }`
@@ -168,7 +170,7 @@ CompraResumen = {
 { "eventoId": "…", "tipoEntradaId": "…", "cantidad": 2 }
 ```
 Crea la compra en `PENDIENTE` y reserva cupo (RN-01, RN-02, RN-09, RN-11).
-`201 CompraDetalle` · `400` validación · `404` evento/tipo inexistente · `409 SIN_CUPO` · `409 REGLA_NEGOCIO` (el evento ya ocurrió o el usuario es el organizador).
+`201 CompraDetalle` (con header `Location`) · `400` validación · `404` evento/tipo inexistente · `409 SIN_CUPO` · `409 REGLA_NEGOCIO` (el evento ya ocurrió o el usuario es el organizador).
 
 ### `GET /usuarios/me/compras` · CU-01
 Compras del usuario actual como comprador. Por defecto ordenadas por fecha del evento ascendente.
@@ -178,7 +180,14 @@ Query: `estado` (opcional). `200 [CompraResumen]`
 Solo los participantes (comprador u organizador), si no `403`.
 `200 CompraDetalle` = `CompraResumen` + `historial: [{ estado, fechaHora, quien: { id, nombre, apellido } | null }]` + `rol: "COMPRADOR" | "ORGANIZADOR"` (el rol del usuario actual en esta compra) + `acciones: ["PAGAR","CANCELAR","MARCAR_UTILIZADA","RESENIAR"]` (las que el usuario actual puede hacer ahora).
 
-`acciones` evita repetir las reglas en la app: el front-end solo muestra los botones que llegan.
+`acciones` evita repetir las reglas en la app: el front-end solo muestra los botones que llegan. Lo calcula `Compra.accionesPara(usuario, ahora)` en el dominio:
+
+| Acción | Para | Cuándo |
+|---|---|---|
+| `PAGAR` | comprador | `PENDIENTE` y el evento no ocurrió |
+| `CANCELAR` | comprador | `puedeCancelarse` (RN-04) |
+| `RESENIAR` | comprador | `UTILIZADA` y todavía no reseñó el evento |
+| `MARCAR_UTILIZADA` | organizador | `CONFIRMADA` |
 
 ### `POST /compras/:id/pago`
 Comprador. `PENDIENTE → CONFIRMADA`. `200 CompraDetalle` · `403` · `409 TRANSICION_INVALIDA`.

@@ -63,10 +63,11 @@ export class TipoEntrada {
 
   reservar(cantidad) {
     if (!this.hayCupoPara(cantidad)) {
-      throw new SinCupoError(
-        `Quedan ${this.cupo} entradas de tipo ${this.nombre} y se pidieron ${cantidad}`,
-        { disponibles: this.cupo, solicitadas: cantidad },
-      );
+      const quedan = this.cupo === 1 ? 'Queda 1 entrada' : `Quedan ${this.cupo} entradas`;
+      throw new SinCupoError(`${quedan} de tipo ${this.nombre} y se pidieron ${cantidad}`, {
+        disponibles: this.cupo,
+        solicitadas: cantidad,
+      });
     }
     this.cupo -= cantidad;
   }

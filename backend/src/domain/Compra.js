@@ -14,6 +14,17 @@ import { esEnteroEnRango, lanzarSiHayErrores, redondear2 } from './validacion.js
 
 export const CANTIDAD_MAXIMA_POR_COMPRA = 10;
 
+/** Rol de un usuario respecto de una compra. */
+export const RolCompra = Object.freeze({ COMPRADOR: 'COMPRADOR', ORGANIZADOR: 'ORGANIZADOR' });
+
+/** Acciones que la app puede ofrecer sobre una compra (campo `acciones` de la API). */
+export const AccionCompra = Object.freeze({
+  PAGAR: 'PAGAR',
+  CANCELAR: 'CANCELAR',
+  MARCAR_UTILIZADA: 'MARCAR_UTILIZADA',
+  RESENIAR: 'RESENIAR',
+});
+
 const { PENDIENTE, CONFIRMADA, UTILIZADA, CANCELADA, REEMBOLSADA } = EstadoCompra;
 
 export class Compra {
@@ -168,6 +179,37 @@ export class Compra {
     if (this.estado !== CONFIRMADA) return null;
     const dias = diasCalendarioEntre(ahora, this.evento.fecha);
     return dias >= 0 ? dias : null;
+  }
+
+  // ---------------------------------------------------------------- Roles y acciones
+
+  /** COMPRADOR, ORGANIZADOR o null si el usuario no participa de la compra. */
+  rolDe(usuario) {
+    if (!usuario) return null;
+    if (usuario.id === this.comprador.id) return RolCompra.COMPRADOR;
+    if (this.evento.esOrganizadoPor(usuario)) return RolCompra.ORGANIZADOR;
+    return null;
+  }
+
+  /**
+   * Acciones que `usuario` puede hacer ahora sobre la compra. Así la app solo muestra
+   * los botones válidos sin repetir las reglas de negocio.
+   * @param {{ yaReseniada?: boolean }} contexto  si el comprador ya reseñó el evento (RN-08)
+   */
+  accionesPara(usuario, ahora, { yaReseniada = false } = {}) {
+    const acciones = [];
+    const rol = this.rolDe(usuario);
+    if (rol === RolCompra.COMPRADOR) {
+      if (this.puedeTransicionarA(CONFIRMADA) && !this.evento.yaOcurrio(ahora)) {
+        acciones.push(AccionCompra.PAGAR);
+      }
+      if (this.puedeCancelarse(ahora)) acciones.push(AccionCompra.CANCELAR);
+      if (this.estado === UTILIZADA && !yaReseniada) acciones.push(AccionCompra.RESENIAR);
+    }
+    if (rol === RolCompra.ORGANIZADOR && this.puedeTransicionarA(UTILIZADA)) {
+      acciones.push(AccionCompra.MARCAR_UTILIZADA);
+    }
+    return acciones;
   }
 
   // ---------------------------------------------------------------- Chat

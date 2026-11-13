@@ -1,6 +1,6 @@
 export { CambioEstadoCompra } from './CambioEstadoCompra.js';
 export { Categoria } from './Categoria.js';
-export { CANTIDAD_MAXIMA_POR_COMPRA, Compra } from './Compra.js';
+export { AccionCompra, CANTIDAD_MAXIMA_POR_COMPRA, Compra, RolCompra } from './Compra.js';
 export {
   ESTADOS_CANCELABLES,
   ESTADOS_QUE_OCUPAN_CUPO,

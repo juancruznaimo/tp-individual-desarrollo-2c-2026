@@ -81,3 +81,42 @@ export function aResenia(resenia) {
     evento: { id: resenia.evento.id, nombre: resenia.evento.nombre },
   };
 }
+
+const aPersona = (usuario) =>
+  usuario ? { id: usuario.id, nombre: usuario.nombre, apellido: usuario.apellido } : null;
+
+export function aCompraResumen(compra, { ahora }) {
+  const { evento, tipoEntrada } = compra;
+  return {
+    id: compra.id,
+    estado: compra.estado,
+    cantidad: compra.cantidad,
+    total: compra.total,
+    creadaEn: compra.creadaEn,
+    diasRestantes: compra.diasRestantes(ahora),
+    puedeCancelarse: compra.puedeCancelarse(ahora),
+    tipoEntrada: { id: tipoEntrada.id, nombre: tipoEntrada.nombre, precio: tipoEntrada.precio },
+    evento: {
+      id: evento.id,
+      nombre: evento.nombre,
+      fecha: evento.fecha,
+      lugar: evento.lugar,
+      imagen: evento.multimedia[0] ?? null,
+    },
+    comprador: aPersona(compra.comprador),
+    cantidadMensajes: compra.mensajes.length,
+  };
+}
+
+export function aCompraDetalle(compra, { ahora, usuario, acciones }) {
+  return {
+    ...aCompraResumen(compra, { ahora }),
+    historial: compra.historial.map((cambio) => ({
+      estado: cambio.estado,
+      fechaHora: cambio.fechaHora,
+      quien: aPersona(cambio.quien),
+    })),
+    rol: compra.rolDe(usuario),
+    acciones,
+  };
+}

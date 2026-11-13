@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import { crearComprasController } from '../controllers/compras.js';
 import { crearEventosController } from '../controllers/eventos.js';
 import { crearCategoriasController, crearUsuariosController } from '../controllers/usuarios.js';
 import { identificarUsuario, requiereUsuario } from '../middlewares/usuarioActual.js';
@@ -14,6 +15,7 @@ export function crearRouterApi({ repos, servicios }) {
   const usuarios = crearUsuariosController(servicios);
   const categorias = crearCategoriasController(servicios);
   const eventos = crearEventosController(servicios);
+  const compras = crearComprasController(servicios);
 
   router.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
@@ -25,6 +27,7 @@ export function crearRouterApi({ repos, servicios }) {
   router.get('/usuarios', usuarios.listar);
   router.get('/usuarios/me', requiereUsuario, usuarios.perfil);
   router.get('/usuarios/me/eventos', requiereUsuario, eventos.deUsuarioActual);
+  router.get('/usuarios/me/compras', requiereUsuario, compras.deUsuarioActual);
   router.get('/usuarios/me/favoritos', requiereUsuario, usuarios.favoritos);
   router.put('/usuarios/me/favoritos/:eventoId', requiereUsuario, usuarios.agregarFavorito);
   router.delete('/usuarios/me/favoritos/:eventoId', requiereUsuario, usuarios.quitarFavorito);
@@ -36,6 +39,14 @@ export function crearRouterApi({ repos, servicios }) {
   router.get('/eventos', eventos.buscar);
   router.post('/eventos', requiereUsuario, eventos.crear);
   router.get('/eventos/:id', eventos.detalle);
+  router.get('/eventos/:id/compras', requiereUsuario, compras.deEvento);
+
+  // Compras
+  router.post('/compras', requiereUsuario, compras.comprar);
+  router.get('/compras/:id', requiereUsuario, compras.detalle);
+  router.post('/compras/:id/pago', requiereUsuario, compras.pagar);
+  router.post('/compras/:id/cancelacion', requiereUsuario, compras.cancelar);
+  router.post('/compras/:id/uso', requiereUsuario, compras.marcarUtilizada);
 
   return router;
 }

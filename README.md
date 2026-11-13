@@ -85,5 +85,6 @@ Al arrancar, el back-end carga datos de ejemplo en memoria (se pierden al reinic
 | E0 — Setup del proyecto | ✅ |
 | E1 — Dominio y persistencia en memoria | ✅ |
 | E2 — API de eventos | ✅ |
-| E3 — API de compras | ⏳ |
-| E4 – E8 | Pendientes (ver [specs/04-etapas.md](specs/04-etapas.md)) |
+| E3 — API de compras | ✅ |
+| E4 — API de mensajes y reseñas | ⏳ |
+| E5 – E8 | Pendientes (ver [specs/04-etapas.md](specs/04-etapas.md)) |
