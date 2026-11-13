@@ -62,6 +62,9 @@ Las categorías son fijas y vienen del seed: Recitales, Teatro, Festivales, Conf
 - `precioMinimo(): Double` **[agregado]** → menor precio entre sus tipos de entrada. Se usa para ordenar por precio y para mostrar "desde $X".
 - `yaOcurrio(ahora): Boolean` **[agregado]** → `fecha <= ahora`.
 - `tipoEntrada(id): TipoEntrada` **[agregado]** → lanza `NoEncontradoError` si el tipo no pertenece al evento.
+- `esOrganizadoPor(usuario): Boolean` **[agregado]**.
+- `agotado: Boolean` **[agregado]** → todos los tipos con cupo 0.
+- `validarFechaFutura(ahora)` **[agregado]** → regla de publicación: la usa el servicio al crear un evento (el seed crea eventos pasados sin pasar por esta regla).
 - `coincideCon(texto): Boolean` **[agregado]** → búsqueda sin distinguir mayúsculas ni tildes sobre `nombre`, `descripcion`, `lugar` y nombre de la categoría.
 
 ### Compra
@@ -85,6 +88,9 @@ Las categorías son fijas y vienen del seed: Recitales, Teatro, Festivales, Conf
 - `diasRestantes(ahora): Int | null` **[agregado]** → solo si `estado = CONFIRMADA` (CU-01). Ver "Cálculo de días restantes".
 - `participa(usuario): Boolean` **[agregado]** → `true` si el usuario es el comprador o el organizador del evento.
 - `agregarMensaje(usuario, texto, ahora)` **[agregado]** → valida que `participa(usuario)` y agrega el `Mensaje`.
+- `static realizar({ comprador, evento, tipoEntradaId, cantidad, ahora })` **[agregado]** → caso de uso de compra (CU-12): valida RN-01 y RN-09, construye la compra y recién después reserva el cupo, así que si algo falla el cupo no cambia.
+- `pagar(usuario, ahora)`, `cancelar(usuario, ahora)`, `marcarUtilizada(usuario, ahora)` **[agregado]** → acciones con sus permisos (RN-05, RN-06) y condiciones (RN-04). Usan `actualizarEstado` por dentro.
+- `fuePagada()` **[agregado]** → si pasó alguna vez por `CONFIRMADA` (condición para reembolsar). `ocupaCupo()` → si su estado está entre los que ocupan cupo.
 
 ### Mensaje
 

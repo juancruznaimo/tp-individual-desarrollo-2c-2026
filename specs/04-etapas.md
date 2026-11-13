@@ -21,7 +21,7 @@ Entregables
 - `.gitignore`.
 
 Criterios de aceptación
-- [ ] `npm test` en `backend/` pasa (con el test de `/health`).
+- [x] `npm test` en `backend/` pasa (con el test de `/health`).
 - [ ] Desde el navegador del celular, en `http://<IP>:5173`, se ve "Back-end OK" hecho con componentes de React Native.
 
 ---
@@ -48,7 +48,7 @@ Tests unitarios (mínimo)
 - Puntaje del organizador: sin reseñas = `null`, promedio redondeado a 1 decimal.
 
 Criterios de aceptación
-- [ ] Cobertura de `domain/` ≥ 90 %.
+- [x] Cobertura de `domain/` ≥ 90 % (99 % de líneas al cerrar la etapa).
 
 ---
 

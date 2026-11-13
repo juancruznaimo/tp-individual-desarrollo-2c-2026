@@ -57,6 +57,18 @@ sudo firewall-cmd --add-port=5173/tcp --permanent     # permanente
 | mobile | `npm run build` | Build de producción en `mobile/dist/` |
 | mobile | `npm run lint` / `npm run format` | ESLint / Prettier |
 
+## Datos de ejemplo
+
+Al arrancar, el back-end carga datos de ejemplo en memoria (se pierden al reiniciar). Las fechas son relativas al día en que se levanta, así que siempre hay eventos pasados y futuros.
+
+| Usuario | ID (`X-User-Id`) | Rol en los datos |
+|---|---|---|
+| Ana Gómez | `usr-ana` | Organiza recitales y festivales (puntaje 4.5) |
+| Bruno Díaz | `usr-bruno` | Organiza teatro y stand-up (puntaje 3.5) |
+| Carla Pérez | `usr-carla` | Compradora con compras en todos los estados |
+| Diego Fernández | `usr-diego` | Comprador; tiene una entrada utilizada sin reseñar |
+| Elena Ruiz | `usr-elena` | Compradora y organizadora de una conferencia y una carrera |
+
 ## Variables de entorno
 
 | Variable | Módulo | Por defecto | Uso |
@@ -70,5 +82,6 @@ sudo firewall-cmd --add-port=5173/tcp --permanent     # permanente
 | Etapa | Estado |
 |---|---|
 | E0 — Setup del proyecto | ✅ |
-| E1 — Dominio y persistencia en memoria | ⏳ |
-| E2 – E8 | Pendientes (ver [specs/04-etapas.md](specs/04-etapas.md)) |
+| E1 — Dominio y persistencia en memoria | ✅ |
+| E2 — API de eventos | ⏳ |
+| E3 – E8 | Pendientes (ver [specs/04-etapas.md](specs/04-etapas.md)) |

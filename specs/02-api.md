@@ -3,6 +3,7 @@
 - URL base: `http://<host>:3000/api`
 - Formato: JSON. Las fechas van como strings ISO 8601 (`2026-12-20T21:00:00.000-03:00`).
 - **Usuario actual:** header `X-User-Id: <id>`. Es obligatorio en todos los endpoints salvo `GET /health`, `GET /usuarios`, `GET /categorias`, `GET /eventos` y `GET /eventos/:id`. Si falta o el usuario no existe → `401 NO_AUTENTICADO`.
+- **IDs del seed:** usuarios, categorías y eventos de ejemplo tienen IDs legibles (`usr-ana`, `usr-bruno`, `usr-carla`, `usr-diego`, `usr-elena`; `cat-recitales`, …; `evt-hamlet`, …) para poder probar a mano. Lo que se crea desde la API usa UUID.
 
 ## Formato de error
 
