@@ -122,10 +122,11 @@ Entregables
 - Explorar (búsqueda con debounce, categorías, orden, rango de precio, scroll infinito).
 - DetalleEvento con reseñas, favorito y flujo de compra.
 - ReseniasOrganizador.
+- DetalleCompra básico (resumen después de comprar); la Etapa 6 le suma historial, acciones y chat.
 
 Criterios de aceptación
-- [ ] Buscar "rock", filtrar por Recitales, ordenar por puntaje y comprar 2 entradas desde el celular.
-- [ ] Intentar comprar más que el cupo no es posible desde la UI (el stepper está limitado).
+- [x] Buscar "rock", filtrar por Recitales, ordenar por puntaje y comprar 2 entradas desde el celular (verificado con un navegador automatizado a 390 px de ancho).
+- [x] Intentar comprar más que el cupo no es posible desde la UI (el stepper está limitado).
 
 ---
 

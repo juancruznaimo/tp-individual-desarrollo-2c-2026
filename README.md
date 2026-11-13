@@ -87,5 +87,6 @@ Al arrancar, el back-end carga datos de ejemplo en memoria (se pierden al reinic
 | E2 — API de eventos | ✅ |
 | E3 — API de compras | ✅ |
 | E4 — API de mensajes y reseñas | ✅ |
-| E5 — App: base, explorar y comprar | ⏳ |
-| E6 – E8 | Pendientes (ver [specs/04-etapas.md](specs/04-etapas.md)) |
+| E5 — App: base, explorar y comprar | ✅ |
+| E6 — App: mis compras, detalle, chat | ⏳ |
+| E7 – E8 | Pendientes (ver [specs/04-etapas.md](specs/04-etapas.md)) |

@@ -4,12 +4,18 @@
 
 - React Native (JavaScript) renderizado en el navegador con `react-native-web`. **Sin Expo.**
 - Vite + `@vitejs/plugin-react`, con el alias `react-native` → `react-native-web` y `resolve.extensions` priorizando `.web.jsx`/`.web.js` (así un componente puede tener una variante solo para web). Los componentes van en archivos `.jsx`.
-- React Navigation: `@react-navigation/native` + `@react-navigation/bottom-tabs` + `@react-navigation/native-stack` (con `react-native-safe-area-context` y `react-native-screens`, que tienen soporte web; `native-stack` no necesita `react-native-gesture-handler`). Se configura `linking` para que cada pantalla tenga URL (`/eventos/:id`, `/compras/:id/chat`, …).
-- Íconos: `lucide-react-native` sobre `react-native-svg` (los dos funcionan en web).
+- React Navigation: `@react-navigation/native` + `@react-navigation/bottom-tabs` + `@react-navigation/native-stack` (con `react-native-safe-area-context` y `react-native-screens`, que tienen soporte web; `native-stack` no necesita `react-native-gesture-handler`). Se configura `linking` para que cada pantalla tenga URL (`/eventos/:id`, `/compras/:id`, …) con `initialRouteName` en cada stack: si se entra por URL a un detalle, debajo queda el listado y aparece la flecha para volver.
+- Íconos: `lucide-react` envuelto en `components/Icono.jsx`. **[decisión]** `react-native-svg` (que necesita `lucide-react-native`) no compila para web con Vite porque importa módulos nativos (`TurboModuleRegistry`); los íconos se dibujan como SVG del navegador y, si la app pasara a nativo, solo cambia `Icono.jsx`.
 - Cliente HTTP: `fetch` a `/api` (ruta relativa, mismo origen) envuelto en `src/api/client.js`, que agrega `X-User-Id` y convierte las respuestas de error en `ApiError { status, codigo, mensaje, detalles }`.
 - Estado: React Context para el usuario actual; estado local + hooks (`useApi`) para los datos de cada pantalla. No hace falta Redux.
 - Persistencia local: un wrapper `src/utils/storage.js` sobre `localStorage` (con try/catch); solo guarda el usuario elegido.
 - Selector de fecha: componente `DateTimeInput.web.jsx` que renderiza un `<input type="datetime-local">` nativo del navegador (en el celular abre el picker del sistema).
+
+## Limitaciones de react-native-web
+
+- `Alert.alert` no hace nada en web: los errores se muestran en línea (`MensajeError`) y las confirmaciones con un `Modal` propio.
+- `RefreshControl` (pull-to-refresh) no existe en web: las pantallas se recargan solas al volver a tener foco (`useRecargarAlVolver`).
+- `onEndReached` no siempre se dispara si la primera página no llena la pantalla (ej. en escritorio): los listados tienen además un botón "Ver más".
 
 ## Responsive
 
@@ -58,7 +64,8 @@ Pantallas compartidas (se apilan desde cualquier tab)
 
   El color nunca es la única señal: el chip siempre lleva texto e ícono.
 - `EventoCard`: imagen, nombre, fecha, lugar, "desde $X", puntaje del organizador (★ 4.5 · 12) y una marca de "Agotado".
-- `Estrellas`: muestra (solo lectura) o permite elegir (input) una puntuación de 1 a 5 en pasos de 0.5.
+- `Estrellas` / `SelectorEstrellas`: muestra (solo lectura) o permite elegir una puntuación de 1 a 5 en pasos de 0.5 (tocar la mitad izquierda de una estrella elige la media).
+- `Imagen`: imagen remota que, si falla la carga, muestra un ícono en lugar de un recuadro vacío.
 - `ErrorView` / `EmptyView` / `Loading`: estados de pantalla uniformes, con botón "Reintentar".
 - Formato: moneda `es-AR` (`$ 45.000`) y fechas `es-AR` en la zona de Buenos Aires.
 
@@ -71,12 +78,12 @@ Lista de `GET /usuarios`. Al tocar uno, se guarda en el contexto (y en `localSto
 - Barra de búsqueda con debounce de 400 ms → `q`.
 - Chips horizontales de categorías (`GET /categorias`) con "Todas" al principio; elegir una filtra por `categoria`.
 - Selector de orden: **Fecha** · **Precio** · **Puntaje del organizador**, más un botón para invertir la dirección.
-- Filtro opcional de rango de precio (bottom sheet con mínimo y máximo).
-- Lista con scroll infinito (`page`) y pull-to-refresh.
+- Filtro opcional de rango de precio: chip "Rango de precio" que abre un bottom sheet con mínimo y máximo (valida que el mínimo no supere al máximo).
+- Lista con scroll infinito (`page`, 12 por página) más un botón "Ver más eventos"; se recarga al volver a la pantalla.
 - Vacío: "No encontramos eventos para «texto»".
 
 ### DetalleEvento · CU-10, CU-12, CU-13
-- Carrusel de `multimedia`, nombre, categoría, fecha, lugar, descripción.
+- Carrusel de `multimedia` (si una imagen no carga se muestra un ícono de reemplazo), nombre, categoría, fecha, lugar, descripción.
 - Organizador con su puntaje → navega a ReseniasOrganizador.
 - Sección **Reseñas de eventos anteriores** (`reseniasOrganizador`), con "Ver todas".
 - Corazón de favorito (PUT/DELETE).
