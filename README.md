@@ -53,6 +53,7 @@ sudo firewall-cmd --add-port=5173/tcp --permanent     # permanente
 | backend | `npm start` | Levanta la API |
 | backend | `npm test` | Corre los tests (Jest + Supertest) |
 | backend | `npm run lint` / `npm run format` | ESLint / Prettier |
+| backend | `requests/api.http` | Requests de ejemplo para REST Client (VS Code) o el cliente HTTP de JetBrains |
 | mobile | `npm run dev` | Servidor de desarrollo, accesible desde la red local |
 | mobile | `npm run build` | Build de producción en `mobile/dist/` |
 | mobile | `npm run lint` / `npm run format` | ESLint / Prettier |
@@ -83,5 +84,6 @@ Al arrancar, el back-end carga datos de ejemplo en memoria (se pierden al reinic
 |---|---|
 | E0 — Setup del proyecto | ✅ |
 | E1 — Dominio y persistencia en memoria | ✅ |
-| E2 — API de eventos | ⏳ |
-| E3 – E8 | Pendientes (ver [specs/04-etapas.md](specs/04-etapas.md)) |
+| E2 — API de eventos | ✅ |
+| E3 — API de compras | ⏳ |
+| E4 – E8 | Pendientes (ver [specs/04-etapas.md](specs/04-etapas.md)) |

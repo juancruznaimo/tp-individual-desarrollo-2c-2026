@@ -70,7 +70,7 @@ Tests de API (mínimo)
 - `POST /eventos`: caso feliz, sin tipos de entrada, nombres de tipo repetidos, precio negativo, cupo 0, fecha pasada, categoría inexistente, sin `X-User-Id`.
 
 Criterios de aceptación
-- [ ] Colección de Postman (o archivo `.http`) en `backend/requests/` con un ejemplo por endpoint.
+- [x] Colección de Postman (o archivo `.http`) en `backend/requests/` con un ejemplo por endpoint (`api.http`).
 
 ---
 

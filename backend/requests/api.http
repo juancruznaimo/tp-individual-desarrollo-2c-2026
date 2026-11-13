@@ -1,0 +1,116 @@
+### AI Ticket It — requests de ejemplo
+# Para la extensión REST Client de VS Code o el cliente HTTP de JetBrains.
+# Levantar el back-end con `npm run dev` y ejecutar cada request con "Send Request".
+# Usuarios del seed: usr-ana, usr-bruno, usr-carla, usr-diego, usr-elena.
+
+@base = http://localhost:3000/api
+@usuario = usr-carla
+
+### Health
+GET {{base}}/health
+
+### ------------------------------------------------------------ Usuarios
+
+### Listar usuarios (selector de "iniciar sesión")
+GET {{base}}/usuarios
+
+### Usuario actual
+GET {{base}}/usuarios/me
+X-User-Id: {{usuario}}
+
+### Sin X-User-Id → 401
+GET {{base}}/usuarios/me
+
+### ------------------------------------------------------------ Categorías
+
+GET {{base}}/categorias
+
+### ------------------------------------------------------------ Eventos (CU-03, CU-11)
+
+### Catálogo: eventos futuros ordenados por fecha
+GET {{base}}/eventos
+
+### Búsqueda textual (sin tildes ni mayúsculas)
+GET {{base}}/eventos?q=opera
+
+### Por categoría
+GET {{base}}/eventos?categoria=cat-teatro
+
+### Texto + categoría
+GET {{base}}/eventos?q=palermo&categoria=cat-recitales
+
+### Rango de precio
+GET {{base}}/eventos?precioMin=10000&precioMax=20000
+
+### Ordenar por precio, de mayor a menor
+GET {{base}}/eventos?orden=precio&direccion=desc
+
+### Ordenar por puntaje del organizador (los que no tienen reseñas van al final)
+GET {{base}}/eventos?orden=puntaje
+
+### Incluir eventos pasados
+GET {{base}}/eventos?q=rock&incluirPasados=true
+
+### Paginación
+GET {{base}}/eventos?limit=3&page=2
+
+### Parámetros inválidos → 400
+GET {{base}}/eventos?orden=nombre&limit=100
+
+### Detalle de evento (con reseñas del organizador)
+GET {{base}}/eventos/evt-jazz-bosque
+X-User-Id: {{usuario}}
+
+### Evento inexistente → 404
+GET {{base}}/eventos/evt-nada
+
+### Crear evento (CU-04)
+POST {{base}}/eventos
+X-User-Id: usr-elena
+Content-Type: application/json
+
+{
+  "nombre": "Taller de React Native",
+  "descripcion": "Taller práctico de un día para construir tu primera app.",
+  "categoriaId": "cat-conferencias",
+  "fecha": "2027-03-15T10:00:00-03:00",
+  "lugar": "UTN FRBA, Medrano 951",
+  "multimedia": ["https://picsum.photos/seed/taller-rn/800/450"],
+  "tiposEntrada": [
+    { "nombre": "Estudiante", "descripcion": "Con libreta", "precio": 5000, "cupo": 40 },
+    { "nombre": "General", "precio": 12000, "cupo": 60 }
+  ]
+}
+
+### Crear evento inválido → 400 con los campos
+POST {{base}}/eventos
+X-User-Id: usr-elena
+Content-Type: application/json
+
+{
+  "nombre": "X",
+  "categoriaId": "cat-nada",
+  "fecha": "2020-01-01T00:00:00-03:00",
+  "tiposEntrada": [
+    { "nombre": "General", "precio": -1, "cupo": 0 },
+    { "nombre": "general", "precio": 10, "cupo": 10 }
+  ]
+}
+
+### Eventos que organizo, con compras por estado
+GET {{base}}/usuarios/me/eventos
+X-User-Id: usr-ana
+
+### ------------------------------------------------------------ Favoritos (CU-13)
+
+### Listar favoritos
+GET {{base}}/usuarios/me/favoritos
+X-User-Id: {{usuario}}
+
+### Agregar favorito
+PUT {{base}}/usuarios/me/favoritos/evt-hamlet
+X-User-Id: {{usuario}}
+
+### Quitar favorito
+DELETE {{base}}/usuarios/me/favoritos/evt-hamlet
+X-User-Id: {{usuario}}

@@ -86,6 +86,7 @@ EventoResumen = {
   "imagen": "https://… | null",          // multimedia[0]
   "precioDesde": 15000,
   "agotado": false,                      // todos los tipos con cupo 0
+  "yaOcurrio": false,
   "organizador": { "id": "…", "nombre": "…", "apellido": "…", "puntaje": 4.5, "cantidadResenias": 12 }
 }
 ```
@@ -93,7 +94,7 @@ EventoResumen = {
 `400` si `orden`/`direccion` no son válidos o `precioMin > precioMax`.
 
 ### `GET /eventos/:id` · CU-10, CU-12
-`200 EventoDetalle` = `EventoResumen` + `descripcion`, `multimedia[]`, `tiposEntrada[{ id, nombre, descripcion, precio, cupo }]`, `yaOcurrio`, `esFavorito` (solo si llega `X-User-Id`) y `reseniasOrganizador`: las 5 reseñas más recientes del organizador (de cualquiera de sus eventos), cada una con `{ id, puntuacion, detalle, creadaEn, comprador: { nombre, apellido }, evento: { id, nombre } }`.
+`200 EventoDetalle` = `EventoResumen` + `descripcion`, `multimedia[]`, `tiposEntrada[{ id, nombre, descripcion, precio, cupo }]`, `esFavorito` y `esOrganizador` (solo si llega `X-User-Id`; la app usa `esOrganizador` para ocultar la compra) y `reseniasOrganizador`: las 5 reseñas más recientes del organizador (de cualquiera de sus eventos), cada una con `{ id, puntuacion, detalle, creadaEn, comprador: { nombre, apellido }, evento: { id, nombre } }`.
 
 `404` si no existe.
 
@@ -116,7 +117,7 @@ El usuario actual pasa a ser el organizador.
 ```
 
 Validaciones: las de [01-dominio.md](01-dominio.md#evento). El `cupo` enviado inicializa `cupo` y `cupoTotal`.
-`201 EventoDetalle` · `400 VALIDACION` · `404` si la categoría no existe.
+`201 EventoDetalle` (con header `Location`) · `400 VALIDACION`. Una categoría inexistente también es `400`, con `campo: "categoriaId"`, para que el formulario lo muestre junto al campo. Se ignoran `id` y `cupoTotal` de los tipos de entrada: los asigna el sistema.
 
 ### `GET /usuarios/me/eventos`
 Eventos que organiza el usuario actual, ordenados por fecha. `200 [EventoResumen + { comprasPorEstado: { PENDIENTE: n, … } }]`

@@ -62,13 +62,15 @@ tp-individual/
 │   │   ├── domain/         # Clases del diagrama + reglas de negocio (sin Express)
 │   │   ├── repositories/   # Repositorios en memoria (Map por entidad)
 │   │   ├── services/       # Casos de uso: coordinan repositorios y dominio
-│   │   ├── controllers/    # Traducen HTTP ⇄ servicios
+│   │   ├── controllers/    # Traducen HTTP ⇄ servicios (parseo de query params)
+│   │   ├── mappers/        # Dominio → JSON de la API
 │   │   ├── routes/         # Routers de Express
 │   │   ├── middlewares/    # auth (usuario actual), manejo de errores, validación
 │   │   ├── errors/         # Jerarquía de errores de la aplicación
 │   │   ├── seed/           # Datos iniciales
 │   │   ├── app.js          # Construye la app de Express (sin listen, para tests)
 │   │   └── server.js       # Punto de entrada: seed + listen
+│   ├── requests/           # api.http: un ejemplo por endpoint
 │   └── test/
 │       ├── unit/           # Dominio y servicios
 │       └── api/            # Supertest contra app.js
