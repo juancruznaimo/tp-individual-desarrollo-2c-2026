@@ -11,6 +11,6 @@ export {
 export { Evento } from './Evento.js';
 export { diasCalendarioEntre, ZONA_HORARIA } from './fechas.js';
 export { Mensaje } from './Mensaje.js';
-export { calcularPuntaje, Resenia } from './Resenia.js';
+export { calcularPuntaje, Resenia, verificarQuePuedeReseniar } from './Resenia.js';
 export { TipoEntrada } from './TipoEntrada.js';
 export { Usuario } from './Usuario.js';

@@ -120,3 +120,13 @@ export function aCompraDetalle(compra, { ahora, usuario, acciones }) {
     acciones,
   };
 }
+
+export function aMensaje(mensaje, usuarioActual) {
+  return {
+    id: mensaje.id,
+    mensaje: mensaje.mensaje,
+    enviado: mensaje.enviado,
+    usuario: aPersona(mensaje.usuario),
+    esMio: mensaje.usuario.id === usuarioActual.id,
+  };
+}

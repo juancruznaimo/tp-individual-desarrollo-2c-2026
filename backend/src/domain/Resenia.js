@@ -1,5 +1,7 @@
 import { randomUUID } from 'node:crypto';
 
+import { ReglaNegocioError } from '../errors/AppError.js';
+import { EstadoCompra } from './EstadoCompra.js';
 import { esNumeroFinito, lanzarSiHayErrores, redondear1, validarTexto } from './validacion.js';
 
 export const PUNTUACION_MINIMA = 1;
@@ -48,4 +50,25 @@ export function calcularPuntaje(resenias) {
   if (resenias.length === 0) return { puntaje: null, cantidadResenias: 0 };
   const suma = resenias.reduce((total, r) => total + r.puntuacion, 0);
   return { puntaje: redondear1(suma / resenias.length), cantidadResenias: resenias.length };
+}
+
+/**
+ * Quién puede reseñar un evento (RN-08, RN-09): no el organizador, una sola vez por
+ * usuario, y solo con al menos una compra UTILIZADA de ese evento.
+ * @param {object} contexto
+ * @param {import('./Compra.js').Compra[]} contexto.compras  compras del comprador para el evento
+ * @param {boolean} contexto.yaReseniado  si ya existe una reseña suya para el evento
+ */
+export function verificarQuePuedeReseniar({ comprador, evento, compras, yaReseniado }) {
+  if (evento.esOrganizadoPor(comprador)) {
+    throw new ReglaNegocioError('No podés reseñar tu propio evento');
+  }
+  if (yaReseniado) {
+    throw new ReglaNegocioError('Ya reseñaste este evento');
+  }
+  if (!compras.some((c) => c.estado === EstadoCompra.UTILIZADA)) {
+    throw new ReglaNegocioError(
+      'Solo podés reseñar eventos a los que asististe (con una entrada utilizada)',
+    );
+  }
 }

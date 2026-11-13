@@ -1,6 +1,8 @@
 import { aCategoria } from '../mappers/index.js';
 import { ComprasService } from './ComprasService.js';
 import { EventosService } from './EventosService.js';
+import { MensajesService } from './MensajesService.js';
+import { ReseniasService } from './ReseniasService.js';
 import { ReputacionService } from './ReputacionService.js';
 import { UsuariosService } from './UsuariosService.js';
 
@@ -26,5 +28,7 @@ export function crearServicios({ repos, reloj }) {
     categorias: new CategoriasService(dependencias),
     eventos: new EventosService(dependencias),
     compras: new ComprasService(dependencias),
+    mensajes: new MensajesService(dependencias),
+    resenias: new ReseniasService(dependencias),
   };
 }

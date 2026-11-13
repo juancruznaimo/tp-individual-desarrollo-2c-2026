@@ -168,3 +168,39 @@ X-User-Id: usr-ana
 ### Un organizador que no es el del evento → 403
 GET {{base}}/eventos/evt-pericos-acustico/compras
 X-User-Id: usr-bruno
+
+### ------------------------------------------------------------ Chat de la compra (CU-05, CU-06)
+
+### Mensajes de una compra (comprador u organizador)
+GET {{base}}/compras/{{compra}}/mensajes
+X-User-Id: {{usuario}}
+
+### Solo los mensajes posteriores a una fecha (polling)
+GET {{base}}/compras/{{compra}}/mensajes?desde=2026-01-01T00:00:00Z
+X-User-Id: {{usuario}}
+
+### Enviar un mensaje
+POST {{base}}/compras/{{compra}}/mensajes
+X-User-Id: {{usuario}}
+Content-Type: application/json
+
+{ "mensaje": "¿A qué hora abren las puertas?" }
+
+### ------------------------------------------------------------ Reseñas (CU-09, CU-10)
+
+### Reseñar un evento (Diego tiene una entrada utilizada del Impro Show sin reseñar)
+POST {{base}}/eventos/evt-impro-todo-vale/resenias
+X-User-Id: usr-diego
+Content-Type: application/json
+
+{ "puntuacion": 4.5, "detalle": "Muy divertido, volvería." }
+
+### Reseñar sin haber asistido → 409
+POST {{base}}/eventos/evt-hamlet/resenias
+X-User-Id: usr-elena
+Content-Type: application/json
+
+{ "puntuacion": 5, "detalle": "Excelente" }
+
+### Reseñas de un organizador (puntaje promedio + lista paginada)
+GET {{base}}/organizadores/usr-ana/resenias

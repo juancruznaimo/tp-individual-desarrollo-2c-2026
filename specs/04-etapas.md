@@ -108,7 +108,7 @@ Tests de API (mínimo)
 - Después de reseñar cambian el puntaje del organizador y el orden por puntaje en `GET /eventos`.
 
 Criterios de aceptación
-- [ ] Back-end completo: todos los endpoints de [02-api.md](02-api.md) implementados y testeados.
+- [x] Back-end completo: todos los endpoints de [02-api.md](02-api.md) implementados y testeados.
 
 ---
 

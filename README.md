@@ -86,5 +86,6 @@ Al arrancar, el back-end carga datos de ejemplo en memoria (se pierden al reinic
 | E1 — Dominio y persistencia en memoria | ✅ |
 | E2 — API de eventos | ✅ |
 | E3 — API de compras | ✅ |
-| E4 — API de mensajes y reseñas | ⏳ |
-| E5 – E8 | Pendientes (ver [specs/04-etapas.md](specs/04-etapas.md)) |
+| E4 — API de mensajes y reseñas | ✅ |
+| E5 — App: base, explorar y comprar | ⏳ |
+| E6 – E8 | Pendientes (ver [specs/04-etapas.md](specs/04-etapas.md)) |

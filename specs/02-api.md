@@ -143,13 +143,13 @@ Solo el organizador del evento (RN-06), si no `403`.
 El filtro `estado` solo afecta a `compras`: `disponibilidad` y `resumenPorEstado` siempre son del evento completo.
 
 ### `GET /organizadores/:id/resenias` · CU-10
-Todas las reseñas de los eventos del organizador, de más nueva a más vieja. `200 { puntaje, cantidadResenias, resenias: Paginado<Resenia> }`
+Pública. Todas las reseñas de los eventos del organizador, de más nueva a más vieja. `200 { puntaje, cantidadResenias, resenias: Paginado<Resenia> }` · `404` si el usuario no existe.
 
 ### `POST /eventos/:id/resenias` · CU-09
 ```json
 { "puntuacion": 4.5, "detalle": "Excelente sonido, muy organizado." }
 ```
-`201 Resenia` · `400` validación · `409 REGLA_NEGOCIO` si no tiene compra `UTILIZADA` del evento, si ya lo reseñó o si es el organizador (RN-08, RN-09).
+Primero se validan los datos y después si puede reseñar. `201 Resenia` · `400` validación · `404` evento inexistente · `409 REGLA_NEGOCIO` si no tiene compra `UTILIZADA` del evento, si ya lo reseñó o si es el organizador (RN-08, RN-09).
 
 ## Compras
 
@@ -203,7 +203,7 @@ Organizador del evento. `CONFIRMADA → UTILIZADA`. `200 CompraDetalle` · `403`
 
 ### `GET /compras/:id/mensajes` · CU-05, CU-06
 Participantes. Ordenados por `enviado` ascendente.
-Query opcional `desde` (ISO): solo mensajes posteriores, para que el polling traiga solo lo nuevo.
+Query opcional `desde` (ISO): solo mensajes estrictamente posteriores, para que el polling traiga solo lo nuevo (`400` si no es una fecha).
 `200 [{ id, mensaje, enviado, usuario: { id, nombre, apellido }, esMio: boolean }]`
 
 ### `POST /compras/:id/mensajes` · CU-05, CU-06

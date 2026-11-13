@@ -2,6 +2,10 @@ import { Router } from 'express';
 
 import { crearComprasController } from '../controllers/compras.js';
 import { crearEventosController } from '../controllers/eventos.js';
+import {
+  crearMensajesController,
+  crearReseniasController,
+} from '../controllers/mensajesYResenias.js';
 import { crearCategoriasController, crearUsuariosController } from '../controllers/usuarios.js';
 import { identificarUsuario, requiereUsuario } from '../middlewares/usuarioActual.js';
 
@@ -16,6 +20,8 @@ export function crearRouterApi({ repos, servicios }) {
   const categorias = crearCategoriasController(servicios);
   const eventos = crearEventosController(servicios);
   const compras = crearComprasController(servicios);
+  const mensajes = crearMensajesController(servicios);
+  const resenias = crearReseniasController(servicios);
 
   router.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
@@ -40,6 +46,10 @@ export function crearRouterApi({ repos, servicios }) {
   router.post('/eventos', requiereUsuario, eventos.crear);
   router.get('/eventos/:id', eventos.detalle);
   router.get('/eventos/:id/compras', requiereUsuario, compras.deEvento);
+  router.post('/eventos/:id/resenias', requiereUsuario, resenias.crear);
+
+  // Reseñas de un organizador (pública)
+  router.get('/organizadores/:id/resenias', resenias.deOrganizador);
 
   // Compras
   router.post('/compras', requiereUsuario, compras.comprar);
@@ -47,6 +57,10 @@ export function crearRouterApi({ repos, servicios }) {
   router.post('/compras/:id/pago', requiereUsuario, compras.pagar);
   router.post('/compras/:id/cancelacion', requiereUsuario, compras.cancelar);
   router.post('/compras/:id/uso', requiereUsuario, compras.marcarUtilizada);
+
+  // Chat de la compra
+  router.get('/compras/:id/mensajes', requiereUsuario, mensajes.listar);
+  router.post('/compras/:id/mensajes', requiereUsuario, mensajes.enviar);
 
   return router;
 }

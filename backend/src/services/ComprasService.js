@@ -109,13 +109,8 @@ export class ComprasService {
     };
   }
 
-  /** La compra existe (404) y el usuario es el comprador o el organizador (403). */
   #compraDeParticipante(compraId, usuario) {
-    const compra = this.repos.compras.obtenerPorId(compraId);
-    if (!compra.participa(usuario)) {
-      throw new ProhibidoError('No participás de esta compra');
-    }
-    return compra;
+    return compraDeParticipante(this.repos, compraId, usuario);
   }
 
   #aDetalle(compra, usuario) {
@@ -129,4 +124,13 @@ export class ComprasService {
       acciones: compra.accionesPara(usuario, ahora, { yaReseniada }),
     });
   }
+}
+
+/** La compra existe (404) y el usuario es el comprador o el organizador (403). */
+export function compraDeParticipante(repos, compraId, usuario) {
+  const compra = repos.compras.obtenerPorId(compraId);
+  if (!compra.participa(usuario)) {
+    throw new ProhibidoError('No participás de esta compra');
+  }
+  return compra;
 }
