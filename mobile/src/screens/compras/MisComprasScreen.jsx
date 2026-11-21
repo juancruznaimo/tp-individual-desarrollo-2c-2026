@@ -9,7 +9,7 @@ import { EmptyView, ErrorView, Loading } from '../../components/EstadosPantalla'
 import { PantallaScroll, TituloSeccion } from '../../components/Layout';
 import { useApi } from '../../hooks/useApi';
 import { useRecargarAlVolver } from '../../hooks/varios';
-import { colores, espaciado } from '../../theme';
+import { ANCHO_MAXIMO, colores, espaciado } from '../../theme';
 
 const FILTROS = [
   { valor: 'TODAS', etiqueta: 'Todas', estados: null },
@@ -103,7 +103,7 @@ function Grupo({ titulo, compras, onAbrir }) {
 
 const styles = StyleSheet.create({
   pantalla: { flex: 1, backgroundColor: colores.fondo },
-  barraChips: { flexGrow: 0 },
+  barraChips: { flexGrow: 0, width: '100%', maxWidth: ANCHO_MAXIMO, alignSelf: 'center' },
   chips: { gap: espaciado.sm, paddingHorizontal: espaciado.md, paddingTop: espaciado.md },
   grupo: { gap: espaciado.sm },
 });

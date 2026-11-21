@@ -21,6 +21,22 @@ export class ApiError extends Error {
 
 let usuarioActualId = null;
 
+let sinConexion = false;
+const oyentesConexion = new Set();
+
+function marcarConexion(caida) {
+  if (caida === sinConexion) return;
+  sinConexion = caida;
+  oyentesConexion.forEach((oyente) => oyente());
+}
+
+export function suscribirConexion(oyente) {
+  oyentesConexion.add(oyente);
+  return () => oyentesConexion.delete(oyente);
+}
+
+export const estaSinConexion = () => sinConexion;
+
 /** Lo setea el contexto de usuario (Etapa 5); se manda como header `X-User-Id`. */
 export function setUsuarioActual(id) {
   usuarioActualId = id;
@@ -44,12 +60,15 @@ export async function request(ruta, { method = 'GET', body, query } = {}) {
       body: body === undefined ? undefined : JSON.stringify(body),
     });
   } catch {
+    marcarConexion(true);
     throw new ApiError({
       status: 0,
       codigo: 'SIN_CONEXION',
       mensaje: 'Sin conexión con el servidor',
     });
   }
+
+  marcarConexion(respuesta.status >= 502);
 
   if (respuesta.status === 204) return null;
 

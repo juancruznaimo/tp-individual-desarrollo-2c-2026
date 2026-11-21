@@ -11,7 +11,10 @@ export default function DateTimeInput({ valor, onCambio, min, error, etiqueta })
       onChange={(e) => onCambio(e.target.value)}
       style={{
         boxSizing: 'border-box',
+        display: 'block',
         width: '100%',
+        minWidth: 0,
+        maxWidth: '100%',
         minHeight: 48,
         padding: `0 ${espaciado.md}px`,
         fontSize: 16,
