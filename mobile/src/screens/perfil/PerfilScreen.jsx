@@ -1,14 +1,27 @@
 import { StyleSheet, Text, View } from 'react-native';
 
+import { listarFavoritos } from '../../api/endpoints';
 import Boton from '../../components/Boton';
-import { PantallaScroll, Tarjeta } from '../../components/Layout';
+import { EmptyView, ErrorView, Loading } from '../../components/EstadosPantalla';
+import EventoCard from '../../components/EventoCard';
+import { PantallaScroll, Tarjeta, TituloSeccion } from '../../components/Layout';
 import { useUsuario } from '../../context/UsuarioContext';
+import { useApi } from '../../hooks/useApi';
+import { useRecargarAlVolver } from '../../hooks/varios';
 import { colores, espaciado, radios } from '../../theme';
 import { iniciales, nombreCompleto } from '../../utils/formato';
 
-/** Datos del usuario y cambio de usuario. La Etapa 6 suma la lista de favoritos. */
-export default function PerfilScreen() {
+export default function PerfilScreen({ navigation }) {
   const { usuario, salir } = useUsuario();
+  const favoritos = useApi(() => listarFavoritos(), usuario.id);
+  useRecargarAlVolver(favoritos.recargar);
+
+  const abrirEvento = (evento) =>
+    navigation.navigate('ExplorarTab', {
+      screen: 'DetalleEvento',
+      params: { id: evento.id },
+      initial: false,
+    });
 
   return (
     <PantallaScroll>
@@ -21,12 +34,41 @@ export default function PerfilScreen() {
         </Text>
         <Text style={styles.email}>{usuario.email}</Text>
       </Tarjeta>
+
+      <View style={styles.seccion}>
+        <TituloSeccion>Favoritos</TituloSeccion>
+        <Favoritos
+          {...favoritos}
+          onAbrir={abrirEvento}
+          onExplorar={() => navigation.navigate('ExplorarTab', { screen: 'Explorar' })}
+        />
+      </View>
+
       <Boton titulo="Cambiar de usuario" icono="salir" variante="secundario" onPress={salir} />
     </PantallaScroll>
   );
 }
 
+function Favoritos({ data, error, cargando, recargar, onAbrir, onExplorar }) {
+  if (cargando && !data) return <Loading />;
+  if (error && !data) return <ErrorView error={error} onReintentar={recargar} />;
+  if (data.length === 0) {
+    return (
+      <EmptyView
+        icono="corazon"
+        titulo="Todavía no guardaste eventos"
+        detalle="Tocá el corazón en un evento para encontrarlo rápido desde acá."
+        accion={<Boton titulo="Explorar eventos" variante="secundario" onPress={onExplorar} />}
+      />
+    );
+  }
+  return data.map((evento) => (
+    <EventoCard key={evento.id} evento={evento} onPress={() => onAbrir(evento)} />
+  ));
+}
+
 const styles = StyleSheet.create({
+  seccion: { gap: espaciado.md },
   tarjeta: { alignItems: 'center', paddingVertical: espaciado.lg },
   avatar: {
     width: 72,

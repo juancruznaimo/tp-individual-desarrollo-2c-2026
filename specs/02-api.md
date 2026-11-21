@@ -159,7 +159,8 @@ CompraResumen = {
   "diasRestantes": 12,                         // null si no está CONFIRMADA
   "puedeCancelarse": true,
   "tipoEntrada": { "id": "…", "nombre": "Campo", "precio": 45000 },
-  "evento": { "id": "…", "nombre": "…", "fecha": "…", "lugar": "…", "imagen": "…" },
+  "evento": { "id": "…", "nombre": "…", "fecha": "…", "lugar": "…", "imagen": "…",
+             "organizador": { "id": "…", "nombre": "…", "apellido": "…" } },
   "comprador": { "id": "…", "nombre": "…", "apellido": "…" },
   "cantidadMensajes": 3
 }

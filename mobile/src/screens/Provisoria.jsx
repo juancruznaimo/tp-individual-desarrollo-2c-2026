@@ -7,12 +7,6 @@ export function crearPantallaProvisoria({ icono, titulo, etapa }) {
   };
 }
 
-export const MisComprasScreen = crearPantallaProvisoria({
-  icono: 'ticket',
-  titulo: 'Mis compras',
-  etapa: 'Etapa 6',
-});
-
 export const MisEventosScreen = crearPantallaProvisoria({
   icono: 'calendario',
   titulo: 'Mis eventos',

@@ -187,6 +187,7 @@ describe('GET /api/usuarios/me/compras (CU-01)', () => {
         fecha: expect.any(String),
         lugar: 'Teatro Gran Rex, CABA',
         imagen: expect.stringContaining('https://'),
+        organizador: { id: 'usr-ana', nombre: 'Ana', apellido: 'Gómez' },
       },
       comprador: { id: 'usr-carla', nombre: 'Carla', apellido: 'Pérez' },
       cantidadMensajes: 3,

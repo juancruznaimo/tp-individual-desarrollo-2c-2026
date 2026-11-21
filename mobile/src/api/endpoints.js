@@ -32,3 +32,28 @@ export const comprar = ({ eventoId, tipoEntradaId, cantidad }) =>
   request('/compras', { method: 'POST', body: { eventoId, tipoEntradaId, cantidad } });
 
 export const obtenerCompra = (id) => request(`/compras/${encodeURIComponent(id)}`);
+
+export const misCompras = (filtros = {}) => request('/usuarios/me/compras', { query: filtros });
+
+export const pagarCompra = (id) =>
+  request(`/compras/${encodeURIComponent(id)}/pago`, { method: 'POST' });
+
+export const cancelarCompra = (id) =>
+  request(`/compras/${encodeURIComponent(id)}/cancelacion`, { method: 'POST' });
+
+export const marcarCompraUtilizada = (id) =>
+  request(`/compras/${encodeURIComponent(id)}/uso`, { method: 'POST' });
+
+// Mensajes
+export const listarMensajes = (id, desde) =>
+  request(`/compras/${encodeURIComponent(id)}/mensajes`, { query: { desde } });
+
+export const enviarMensaje = (id, mensaje) =>
+  request(`/compras/${encodeURIComponent(id)}/mensajes`, { method: 'POST', body: { mensaje } });
+
+// Reseñas
+export const reseniarEvento = (eventoId, { puntuacion, detalle }) =>
+  request(`/eventos/${encodeURIComponent(eventoId)}/resenias`, {
+    method: 'POST',
+    body: { puntuacion, detalle },
+  });

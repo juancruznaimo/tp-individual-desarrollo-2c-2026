@@ -4,12 +4,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Icono from '../components/Icono';
 import { useUsuario } from '../context/UsuarioContext';
+import ChatScreen from '../screens/compras/ChatScreen';
 import DetalleCompraScreen from '../screens/compras/DetalleCompraScreen';
+import MisComprasScreen from '../screens/compras/MisComprasScreen';
 import DetalleEventoScreen from '../screens/explorar/DetalleEventoScreen';
 import ExplorarScreen from '../screens/explorar/ExplorarScreen';
 import ReseniasOrganizadorScreen from '../screens/explorar/ReseniasOrganizadorScreen';
 import PerfilScreen from '../screens/perfil/PerfilScreen';
-import { MisComprasScreen, MisEventosScreen } from '../screens/Provisoria';
+import { MisEventosScreen } from '../screens/Provisoria';
 import SeleccionUsuarioScreen from '../screens/SeleccionUsuarioScreen';
 import { colores } from '../theme';
 
@@ -48,6 +50,7 @@ const linking = {
             screens: {
               MisCompras: 'compras',
               DetalleCompra: 'compras/:id',
+              Chat: 'compras/:id/chat',
             },
           },
           MisEventosTab: { screens: { MisEventos: 'mis-eventos' } },
@@ -93,6 +96,7 @@ function ComprasNavigator() {
         component={DetalleCompraScreen}
         options={{ title: 'Compra' }}
       />
+      <ComprasStack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat' }} />
     </ComprasStack.Navigator>
   );
 }

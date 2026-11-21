@@ -102,6 +102,7 @@ export function aCompraResumen(compra, { ahora }) {
       fecha: evento.fecha,
       lugar: evento.lugar,
       imagen: evento.multimedia[0] ?? null,
+      organizador: aPersona(evento.organizador),
     },
     comprador: aPersona(compra.comprador),
     cantidadMensajes: compra.mensajes.length,
