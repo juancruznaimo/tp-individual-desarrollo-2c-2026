@@ -23,6 +23,8 @@ const ExplorarStack = createNativeStackNavigator();
 const ComprasStack = createNativeStackNavigator();
 const EventosStack = createNativeStackNavigator();
 
+const porId = ({ params }) => params?.id;
+
 const opcionesHeader = {
   headerStyle: { backgroundColor: colores.superficie },
   headerTintColor: colores.primario,
@@ -82,11 +84,13 @@ function ExplorarNavigator() {
       />
       <ExplorarStack.Screen
         name="DetalleEvento"
+        getId={porId}
         component={DetalleEventoScreen}
         options={{ title: 'Evento' }}
       />
       <ExplorarStack.Screen
         name="ReseniasOrganizador"
+        getId={porId}
         component={ReseniasOrganizadorScreen}
         options={{ title: 'Reseñas del organizador' }}
       />
@@ -104,10 +108,16 @@ function ComprasNavigator() {
       />
       <ComprasStack.Screen
         name="DetalleCompra"
+        getId={porId}
         component={DetalleCompraScreen}
         options={{ title: 'Compra' }}
       />
-      <ComprasStack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat' }} />
+      <ComprasStack.Screen
+        name="Chat"
+        getId={porId}
+        component={ChatScreen}
+        options={{ title: 'Chat' }}
+      />
     </ComprasStack.Navigator>
   );
 }
@@ -127,15 +137,22 @@ function EventosNavigator() {
       />
       <EventosStack.Screen
         name="ComprasDelEvento"
+        getId={porId}
         component={ComprasDelEventoScreen}
         options={{ title: 'Compras del evento' }}
       />
       <EventosStack.Screen
         name="DetalleCompra"
+        getId={porId}
         component={DetalleCompraScreen}
         options={{ title: 'Compra' }}
       />
-      <EventosStack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat' }} />
+      <EventosStack.Screen
+        name="Chat"
+        getId={porId}
+        component={ChatScreen}
+        options={{ title: 'Chat' }}
+      />
     </EventosStack.Navigator>
   );
 }
