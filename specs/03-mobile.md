@@ -119,7 +119,7 @@ Lista de `GET /usuarios`. Al tocar uno, se guarda en el contexto (y en `localSto
 - Tocar un evento → ComprasDelEvento.
 
 ### CrearEvento · CU-04
-- Campos: nombre, descripción, categoría (picker), fecha y hora (`DateTimeInput`), lugar y URLs de imágenes (lista donde se agregan y quitan).
+- Campos: nombre, descripción, categoría (chips), fecha y hora (`DateTimeInput`), lugar y URLs de imágenes (lista donde se agregan y quitan).
 - **Tipos de entrada:** lista dinámica con nombre, descripción, precio y cupo; "Agregar tipo"; mínimo 1.
 - Validación en el cliente con las mismas reglas del dominio. Los errores del back-end (`detalles[].campo`) se muestran junto al campo que corresponde.
 - Al crear → vuelve a MisEventos y lo refresca.

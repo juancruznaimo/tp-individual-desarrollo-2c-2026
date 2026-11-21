@@ -11,7 +11,9 @@ import DetalleEventoScreen from '../screens/explorar/DetalleEventoScreen';
 import ExplorarScreen from '../screens/explorar/ExplorarScreen';
 import ReseniasOrganizadorScreen from '../screens/explorar/ReseniasOrganizadorScreen';
 import PerfilScreen from '../screens/perfil/PerfilScreen';
-import { MisEventosScreen } from '../screens/Provisoria';
+import ComprasDelEventoScreen from '../screens/eventos/ComprasDelEventoScreen';
+import CrearEventoScreen from '../screens/eventos/CrearEventoScreen';
+import MisEventosScreen from '../screens/eventos/MisEventosScreen';
 import SeleccionUsuarioScreen from '../screens/SeleccionUsuarioScreen';
 import { colores } from '../theme';
 
@@ -53,7 +55,16 @@ const linking = {
               Chat: 'compras/:id/chat',
             },
           },
-          MisEventosTab: { screens: { MisEventos: 'mis-eventos' } },
+          MisEventosTab: {
+            initialRouteName: 'MisEventos',
+            screens: {
+              MisEventos: 'mis-eventos',
+              CrearEvento: 'mis-eventos/nuevo',
+              ComprasDelEvento: 'mis-eventos/:id/compras',
+              DetalleCompra: 'mis-eventos/compras/:id',
+              Chat: 'mis-eventos/compras/:id/chat',
+            },
+          },
           PerfilTab: 'perfil',
         },
       },
@@ -109,6 +120,22 @@ function EventosNavigator() {
         component={MisEventosScreen}
         options={{ title: 'Mis eventos' }}
       />
+      <EventosStack.Screen
+        name="CrearEvento"
+        component={CrearEventoScreen}
+        options={{ title: 'Nuevo evento' }}
+      />
+      <EventosStack.Screen
+        name="ComprasDelEvento"
+        component={ComprasDelEventoScreen}
+        options={{ title: 'Compras del evento' }}
+      />
+      <EventosStack.Screen
+        name="DetalleCompra"
+        component={DetalleCompraScreen}
+        options={{ title: 'Compra' }}
+      />
+      <EventosStack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat' }} />
     </EventosStack.Navigator>
   );
 }

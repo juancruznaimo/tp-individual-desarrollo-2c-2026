@@ -22,6 +22,12 @@ export const buscarEventos = (filtros) => request('/eventos', { query: filtros }
 
 export const obtenerEvento = (id) => request(`/eventos/${encodeURIComponent(id)}`);
 
+export const crearEvento = (datos) => request('/eventos', { method: 'POST', body: datos });
+
+export const misEventos = () => request('/usuarios/me/eventos');
+
+export const comprasDeEvento = (id) => request(`/eventos/${encodeURIComponent(id)}/compras`);
+
 export const reseniasDeOrganizador = (organizadorId, { page = 1, limit = 10 } = {}) =>
   request(`/organizadores/${encodeURIComponent(organizadorId)}/resenias`, {
     query: { page, limit },
